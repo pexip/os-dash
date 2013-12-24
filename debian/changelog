@@ -1,3 +1,9 @@
+dash (0.5.7-2ubuntu2pexip1) pexip; urgency=low
+
+  * Prepare Pexip packaging
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 24 Dec 2013 14:28:50 +0000
+
 dash (0.5.7-2ubuntu2) precise; urgency=low
 
   * Ensure correct strip is called when cross-building LP: #966103

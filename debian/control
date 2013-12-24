@@ -1,12 +1,14 @@
 Source: dash
 Section: shells
 Priority: optional
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Gerrit Pape <pape@smarden.org>
 Build-Depends: po-debconf, sharutils
 Standards-Version: 3.8.4.0
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 Vcs-Git: http://smarden.org/git/dash.git/
+XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
 
 Package: dash
 Architecture: any
