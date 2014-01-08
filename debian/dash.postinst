@@ -115,13 +115,6 @@ add_shell() {
 	add-shell /bin/dash
 }
 
-reset_default() {
-	db_fget dash/sh seen
-	if [ "$RET" = false ]; then
-		db_reset dash/sh
-	fi
-}
-
 debconf=
 if [ -f /usr/share/debconf/confmodule ]; then
 	. /usr/share/debconf/confmodule
@@ -138,8 +131,6 @@ elif [ "$1" = configure ] && dpkg --compare-versions "$2" lt 0.4.18; then
 fi
 
 if [ $debconf ]; then
-	reset_default
-
 	db_get dash/sh
 	check_divert "$RET" /bin/sh dash
 	check_divert "$RET" /usr/share/man/man1/sh.1.gz dash.1.gz \

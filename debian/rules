@@ -1,25 +1,31 @@
 #!/usr/bin/make -f
 
 CC =gcc
-CFLAGS =-g -O2 -Wall
 STRIP =strip
+
+DEB_BUILD_MAINT_OPTIONS =hardening=+all
+CFLAGS =$(shell DEB_BUILD_MAINT_OPTIONS=$(DEB_BUILD_MAINT_OPTIONS) \
+  dpkg-buildflags --get CFLAGS)
+LDFLAGS =$(shell DEB_BUILD_MAINT_OPTIONS=$(DEB_BUILD_MAINT_OPTIONS) \
+  dpkg-buildflags --get LDFLAGS)
+CPPFLAGS =$(shell DEB_BUILD_MAINT_OPTIONS=$(DEB_BUILD_MAINT_OPTIONS) \
+  dpkg-buildflags --get CPPFLAGS)
 
 DEB_HOST_GNU_TYPE =$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE =$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
   CC =$(DEB_HOST_GNU_TYPE)-gcc
-  STRIP =$(DEB_HOST_GNU_TYPE)-strip
 endif
 
 ifneq (,$(findstring diet,$(DEB_BUILD_OPTIONS)))
   CC =diet -v -Os gcc
   CFLAGS =-nostdinc -Wall
+  CPPFLAGS =
+  LDFLAGS =
 endif
 ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
   STRIP =: strip
 endif
-
-profiled_build=no
 
 DIR =$(shell pwd)/debian/dash
 DIRA =$(shell pwd)/debian/ash
@@ -35,59 +41,17 @@ configure: deb-checkdir configure-stamp
 configure-stamp: patch-stamp
 	mkdir -p build-tmp
 	touch configure
-	(cd build-tmp && CC='$(CC)' CFLAGS='$(CFLAGS)' \
+	(cd build-tmp && CC='$(CC)' \
+	  CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' LDFLAGS='$(LDFLAGS)' \
 	  exec ../configure --host='$(DEB_HOST_GNU_TYPE)')
 	touch configure-stamp
 
 build: deb-checkdir build-stamp
-ifeq ($(profiled_build),yes)
-build-stamp: configure-stamp check-system-stamp build-pgen-stamp build-puse-stamp check-built-stamp
-	touch build-stamp
-else
 build-stamp: configure-stamp
 	-$(CC) -v
-	(cd build-tmp && exec $(MAKE) CFLAGS='$(CFLAGS)') || \
+	(cd build-tmp && exec $(MAKE) CFLAGS='$(CFLAGS)' CPPFLAGS='$(CPPFLAGS)' LDFLAGS='$(LDFLAGS)') || \
 	  (cat build-tmp/config.log; exit 1) || exit 1
 	touch build-stamp
-endif
-
-check-system-stamp:
-	uudecode tests.tar.gz.uue
-	tar xf tests.tar.gz
-	cat $$(find tests -type f) > /dev/null
-	tests/rt/run /bin/dash tests/rt 2>&1 | sort | tee tests/rt-system.log
-	touch check-system-stamp
-
-build-pgen-stamp: check-system-stamp
-	$(MAKE) -C build-tmp CFLAGS='$(CFLAGS) -fprofile-generate'
-	tests/rt/run build-tmp/src/dash tests/rt 2>&1 | tee tests/rt-pgen.log
-	shells="build-tmp/src/dash" \
-	  tests/sp/run tests/sp/tests 2>&1 | tee tests/sp-pgen.log
-	touch build-pgen-stamp
-
-build-puse-stamp: build-pgen-stamp
-	$(MAKE) -C build-tmp clean
-	$(MAKE) -C build-tmp CFLAGS='$(CFLAGS) -fprofile-use'
-	touch build-puse-stamp
-
-check-built-stamp: build-puse-stamp
-	tests/rt/run build-tmp/src/dash tests/rt 2>&1 | sort | tee tests/rt-puse.log
-
-	comm -23 tests/rt-system.log tests/rt-puse.log > tests/progressions
-	comm -13 tests/rt-system.log tests/rt-puse.log > tests/regressions
-	@if [ -s tests/progressions ]; then \
-	  echo >&2 'progressions found in profiled build:'; \
-	  cat >&2 tests/progressions; \
-	fi
-	@if [ -s tests/regressions ]; then \
-	  echo >&2 'regressions found in profiled build:'; \
-	  cat >&2 tests/regressions; \
-	  exit 1; \
-	fi
-
-	shells="/bin/dash build-tmp/src/dash" \
-	  tests/sp/run tests/sp/tests 2>&1 | tee tests/sp-puse.log
-	touch check-built-stamp
 
 po-templates: po-templates-stamp
 po-templates-stamp: deb-checkdir
@@ -101,7 +65,6 @@ clean: deb-checkdir deb-checkuid
 	rm -f configure-stamp patch-stamp build-stamp po-templates-stamp
 	rm -rf '$(DIR)' '$(DIRA)'
 	rm -f debian/files debian/substvars debian/dash.templates changelog
-	rm -rf tests.tar.gz tests *-stamp
 
 install: install-indep install-arch
 install-indep: deb-checkdir deb-checkuid
