@@ -8,7 +8,7 @@ Build-Depends: po-debconf, sharutils
 Standards-Version: 3.8.4.0
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 Vcs-Git: http://smarden.org/git/dash.git/
-XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
 
 Package: dash
 Architecture: any
