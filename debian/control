@@ -7,7 +7,7 @@ Build-Depends: po-debconf, dpkg-dev (>= 1.16.1),
 Standards-Version: 3.9.3.0
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 Vcs-Git: http://smarden.org/git/dash.git/
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
 
 Package: dash
 Architecture: any
