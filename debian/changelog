@@ -1,3 +1,57 @@
+dash (0.5.8-2.4) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Don't execute binary files as scripts. (Closes: #816313)
+  * printf '\e' (Closes: #816295)
+  * Fix bad permissions on dash.md5sums (Closes: #832173)
+
+ -- Adam Borowski <kilobyte@angband.pl>  Tue, 24 Jan 2017 06:16:56 +0100
+
+dash (0.5.8-2.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix FTBFS by adding build-arch and build-indep targets to debian/rules.
+    Thanks to Sven Joachim <svenjoac@gmx.de> for the initial patch.
+    Closes: #829666
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 05 Jul 2016 21:59:04 +0000
+
+dash (0.5.8-2.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Apply Jérémy Bobbio's patches to make dash reproducible.
+    (Closes: #774425)
+
+ -- Niels Thykier <niels@thykier.net>  Sat, 12 Mar 2016 09:05:01 +0000
+
+dash (0.5.8-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+
+  [ Marcin Juszkiewicz ]
+  * Ensure correct strip is called when cross-building (closes: #665965)
+
+ -- Helmut Grohne <helmut@subdivi.de>  Sat, 09 Jan 2016 18:35:21 +0100
+
+dash (0.5.8-2) experimental; urgency=medium
+
+  * debian/rules: pass --disable-lineno option to configure (thx Sven
+    Joachim, closes: #766048).
+
+ -- Gerrit Pape <pape@smarden.org>  Mon, 20 Oct 2014 17:46:03 +0000
+
+dash (0.5.8-1) experimental; urgency=medium
+
+  * new upstream release (closes: #598238).
+    * 0003-VAR-Disable-LINENO-support.diff: remove; upstream now has
+      configure --disable-lineno option.
+  * debian/rules: pass --enable-fnmatch option to configure
+    (closes: #763407).
+  * debian/po/sr.po: new; [INTL:sr] Serbian cyrillic translation of
+    debconf template (thx Zlatan Todoric, closes: #635069).
+
+ -- Gerrit Pape <pape@smarden.org>  Wed, 01 Oct 2014 08:53:14 +0000
+
 dash (0.5.7-4+b1pexip1) pexip; urgency=low
 
   * Migrate to Jessie
