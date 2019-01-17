@@ -13,7 +13,7 @@ diff --git a/src/bltin/printf.c b/src/bltin/printf.c
 index a626cee..c34bf66 100644
 --- a/src/bltin/printf.c
 +++ b/src/bltin/printf.c
-@@ -332,6 +332,7 @@ conv_escape(char *str, int *conv_ch)
+@@ -340,6 +340,7 @@ conv_escape(char *str, int *conv_ch)
  	case '\\':	value = '\\';	break;	/* backslash */
  	case 'a':	value = '\a';	break;	/* alert */
  	case 'b':	value = '\b';	break;	/* backspace */
