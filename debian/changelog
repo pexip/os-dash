@@ -1,3 +1,9 @@
+dash (0.5.10.2-5pexip1) pexip; urgency=medium
+
+  * Migrate to Buster
+
+ -- Vincent Sanders <vince@pexip.com>  Fri, 28 Feb 2020 11:07:43 +0000
+
 dash (0.5.10.2-5) unstable; urgency=medium
 
   * Fix lintian overrides.
