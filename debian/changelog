@@ -1,3 +1,9 @@
+dash (0.5.10.2-5pexip2) pexip; urgency=medium
+
+  * Rebuild in buster environment
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Wed, 15 Jul 2020 18:01:40 +0000
+
 dash (0.5.10.2-5pexip1) pexip; urgency=medium
 
   * Migrate to Buster
