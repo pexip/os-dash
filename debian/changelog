@@ -1,3 +1,69 @@
+dash (0.5.11+git20200708+dd9ef66-5) unstable; urgency=medium
+
+  * Actually set PATH_MAX for Hurd.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 10 Dec 2020 14:23:19 +0100
+
+dash (0.5.11+git20200708+dd9ef66-4) unstable; urgency=medium
+
+  * Define PATH_MAX=4096 on Hurd.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 10 Dec 2020 10:55:18 +0100
+
+dash (0.5.11+git20200708+dd9ef66-3) unstable; urgency=medium
+
+  [ Johannes 'josch' Schauer ]
+  * Don’t rely on /usr/share/man/man1/ existing (Closes: #974825).
+
+  [ Andrej Shadura ]
+  * Disable libc glob support (Closes: #974900, #976685).
+  * Apply upstream patch:
+    - jobs: Only block in waitcmd on first run (Closes: #974705, #975010).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 10 Dec 2020 10:07:56 +0100
+
+dash (0.5.11+git20200708+dd9ef66-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 12 Nov 2020 08:58:00 +0100
+
+dash (0.5.11+git20200708+dd9ef66-1) experimental; urgency=medium
+
+  * New upstream snapshot
+    (Closes: #541544, #541642, #692611, #930805).
+  * Drop patches applied upstream.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sat, 08 Aug 2020 15:13:49 +0200
+
+dash (0.5.10.2-7) unstable; urgency=medium
+
+  * Provide machine-readable copyright file.
+  * Use debhelper-compat instead of debian/compat.
+  * Use dh 12.
+  * Drop nostrip handling, it is build into dh_strip.
+  * Wrap and sort Build-Depends.
+  * Change the privmode long option name to privileged to match bash.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Mon, 30 Mar 2020 11:45:13 +0200
+
+dash (0.5.10.2-6) unstable; urgency=medium
+
+  * Apply patch from Chris Lamb:
+    - dash: Fix stack overflow from infinite recursion in script
+      (Closes: #579815)
+  * Apply upstream patches:
+    - shell: Don't include config.h for native helpers
+    - system: Disable glibc warning on sigsetmask
+  * Apply patches proposed upstream:
+    - options: Do not set commandname in procargs
+    - histedit: Fix infinite loop when using 'fc -s'
+      (Closes: #928072)
+  * Update the CI pipeline (thanks to Iñaki Malerba).
+  * Enable hardening for helpers.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 18 Jul 2019 15:15:27 -0300
+
 dash (0.5.10.2-5) unstable; urgency=medium
 
   * Fix lintian overrides.
@@ -2051,4 +2117,3 @@ ash (0.3-1) unstable; urgency=low
   * Initial Release.
 
  -- Herbert Xu <herbert@debian.org>  Thu, 19 Jun 1997 19:29:16 +1000
-
