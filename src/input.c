@@ -58,7 +58,6 @@
 #include "myhistedit.h"
 #endif
 
-#define EOF_NLEFT -99		/* value of parsenleft when EOF pushed back */
 #define IBUFSIZ (BUFSIZ + 1)
 
 
@@ -87,6 +86,7 @@ INIT {
 RESET {
 	/* clear input buffer */
 	basepf.lleft = basepf.nleft = 0;
+	basepf.unget = 0;
 	popallfiles();
 }
 
@@ -219,9 +219,8 @@ retry:
  * Refill the input buffer and return the next input character:
  *
  * 1) If a string was pushed back on the input, pop it;
- * 2) If an EOF was pushed back (parsenleft == EOF_NLEFT) or we are reading
- *    from a string so we can't refill the buffer, return EOF.
- * 3) If the is more stuff in this buffer, use it else call read to fill it.
+ * 2) If we are reading from a string we can't refill the buffer, return EOF.
+ * 3) If there is more stuff in this buffer, use it else call read to fill it.
  * 4) Process input up to the next newline, deleting nul characters.
  */
 
@@ -238,8 +237,7 @@ static int preadbuffer(void)
 		popstring();
 		return __pgetc();
 	}
-	if (unlikely(parsefile->nleft == EOF_NLEFT ||
-		     parsefile->buf == NULL))
+	if (parsefile->buf == NULL)
 		return PEOF;
 	flushall();
 
@@ -247,7 +245,7 @@ static int preadbuffer(void)
 	if (more <= 0) {
 again:
 		if ((more = preadfd()) <= 0) {
-			parsefile->lleft = parsefile->nleft = EOF_NLEFT;
+			parsefile->lleft = parsefile->nleft = 0;
 			return PEOF;
 		}
 	}

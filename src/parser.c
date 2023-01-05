@@ -1252,7 +1252,8 @@ varname:
 			do {
 				STPUTC(c, out);
 				c = pgetc_eatbnl();
-			} while (!subtype && is_digit(c));
+			} while ((subtype <= 0 || subtype >= VSLENGTH) &&
+				 is_digit(c));
 		} else if (c != '}') {
 			int cc = c;
 
@@ -1312,6 +1313,8 @@ varname:
 				break;
 			}
 		} else {
+			if (subtype == VSLENGTH && c != '}')
+				subtype = 0;
 badsub:
 			pungetc();
 		}
@@ -1330,7 +1333,7 @@ badsub:
 			synstack->dblquote = newsyn != BASESYNTAX;
 		}
 
-		*((char *)stackblock() + typeloc) = subtype;
+		*((char *)stackblock() + typeloc) = subtype | VSBIT;
 		if (subtype != VSNORMAL) {
 			synstack->varnest++;
 			if (synstack->dblquote)
@@ -1586,9 +1589,7 @@ expandstr(const char *ps)
 	result = stackblock();
 
 out:
-	handler = savehandler;
-	if (err && exception != EXERROR)
-		longjmp(handler->loc, 1);
+	restore_handler_expandarg(savehandler, err);
 
 	doprompt = saveprompt;
 	unwindfiles(file_stop);

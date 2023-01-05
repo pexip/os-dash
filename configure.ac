@@ -1,4 +1,4 @@
-AC_INIT([dash],[0.5.11])
+AC_INIT([dash],[0.5.12])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/main.c])
 
@@ -39,8 +39,7 @@ fi
 
 AC_ARG_ENABLE(fnmatch, AS_HELP_STRING(--disable-fnmatch, \
 				      [Do not use fnmatch(3) from libc]))
-AC_ARG_ENABLE(glob, AS_HELP_STRING(--disable-glob, \
-				   [Do not use glob(3) from libc]))
+AC_ARG_ENABLE(glob, AS_HELP_STRING(--enable-glob, [Use glob(3) from libc]))
 
 dnl Checks for libraries.
 
@@ -128,7 +127,7 @@ if test "$enable_fnmatch" != no; then
 	AC_CHECK_FUNCS(fnmatch, use_fnmatch=yes)
 fi
 
-if test "$use_fnmatch" = yes && test "$enable_glob" != no; then
+if test "$use_fnmatch" = yes && test "$enable_glob" = yes; then
 	AC_CHECK_FUNCS(glob)
 fi
 
@@ -141,15 +140,12 @@ if test "$ac_cv_func_signal" != yes; then
 fi
 
 dnl Check for stat64 (dietlibc/klibc).
-AC_CHECK_FUNC(stat64,, [
+AC_CHECK_DECL(stat64, AC_CHECK_FUNC(stat64))
+if test "$ac_cv_func_stat64" != yes; then
 	AC_DEFINE(fstat64, fstat, [64-bit operations are the same as 32-bit])
 	AC_DEFINE(lstat64, lstat, [64-bit operations are the same as 32-bit])
 	AC_DEFINE(stat64, stat, [64-bit operations are the same as 32-bit])
-	AC_DEFINE(readdir64, readdir,
-		  [64-bit operations are the same as 32-bit])
-	AC_DEFINE(dirent64, dirent,
-		  [64-bit operations are the same as 32-bit])
-])
+fi
 
 AC_CHECK_FUNC(glob64,, [
 	AC_DEFINE(glob64_t, glob_t, [64-bit operations are the same as 32-bit])
@@ -161,6 +157,10 @@ AC_CHECK_FUNC(glob64,, [
 dnl OS X apparently has stat64 but not open64.
 AC_CHECK_FUNC(open64,, [
 	AC_DEFINE(open64, open, [64-bit operations are the same as 32-bit])
+	AC_DEFINE(readdir64, readdir,
+		  [64-bit operations are the same as 32-bit])
+	AC_DEFINE(dirent64, dirent,
+		  [64-bit operations are the same as 32-bit])
 ])
 
 dnl Check if struct stat has st_mtim.
@@ -183,7 +183,8 @@ if test "$with_libedit" = "yes"; then
 	AC_CHECK_LIB(edit, history_init, [
 		AC_CHECK_HEADER([histedit.h], [use_libedit="yes"],
 				AC_MSG_ERROR(
-					[Can't find required header files.]))])
+					[Can't find required header files.]))], [
+		AC_MSG_ERROR([Can't find libedit.])])
 fi
 if test "$use_libedit" != "yes"; then
 	AC_DEFINE([SMALL], 1, [Define if you build with -DSMALL])
