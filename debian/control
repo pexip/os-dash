@@ -12,7 +12,7 @@ Standards-Version: 4.2.1
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 Vcs-Git: https://salsa.debian.org/debian/dash.git
 Vcs-Browser: https://salsa.debian.org/debian/dash
-XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
+XS-Pexip-Upstream: http://deb.debian.org/debian/ bookworm
 
 Package: dash
 Architecture: any
