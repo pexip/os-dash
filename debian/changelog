@@ -1,3 +1,112 @@
+dash (0.5.12-2) unstable; urgency=medium
+
+  * Fix the changelog entry.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 05 Jan 2023 14:20:48 +0100
+
+dash (0.5.12-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #1017531, #1024635).
+  * Refresh patches.
+  * Apply upstream patches for hash, ulimit and manpages
+    (Closes: #558607, #819829, #975325, #975326).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 05 Jan 2023 14:06:02 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-9) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * debian/tests/mmdebstrap: create chroot with the same apt sources as
+    autopkgtest (Closes: #1016554).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 01 Sep 2022 16:11:54 +0200
+
+dash (0.5.11+git20210903+057cd650a4ed-8) unstable; urgency=medium
+
+  * Remove the remnants of the debconf shell question
+    (Closes: #1007093, #1007241).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Mon, 14 Mar 2022 15:11:00 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-7) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * debian/tests/mmdebstrap: fix running on debci and add more comments.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sat, 05 Mar 2022 11:32:15 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-6) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * debian/dash.postinst: fix missing ].
+  * Add autopkgtest installing dash into a fresh chroot.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 04 Mar 2022 22:19:03 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-5) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * dpkg-realpath has a /bin/sh shebang and can thus not be used when /bin/sh is temporarily not available.
+  * debian/dash.postinst: restore DPKG_ROOT support.
+  * debian/dash.postinst: Move check if dfile exists further up.
+  * Closes: #1006771
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 04 Mar 2022 18:34:16 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-4) unstable; urgency=medium
+
+  [ Andrej Shadura ]
+  * Stop using debconf to select the default /bin/sh.
+  * Don’t use external fnmatch/glob.
+  * Apply upstream patch to check executable bit when searching path
+    (Closes: #874264)
+  * Drop po files from debian/copyright.
+  * Sort debian/copyright.
+  * Update copyright years.
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * Replace add-shell/remove-shell with declarative shells.d trigger
+    (Closes: #1004172)
+  * Allow downgrades to dash versions before it started using update-shells.
+  * debian/dash.postinst: reproducible symlink mtime using symlink target
+    mtime.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 03 Mar 2022 17:40:59 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-3) unstable; urgency=medium
+
+  * Revert "Enable libedit".
+  * Revert "Re-enable LINENO support".
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 03 Nov 2021 11:51:39 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-2) unstable; urgency=medium
+
+  * Re-enable LINENO support (Closes: #842242)/
+  * Enable libedit (Closes: #524839, #561663).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Tue, 02 Nov 2021 12:58:31 +0100
+
+dash (0.5.11+git20210903+057cd650a4ed-1) unstable; urgency=medium
+
+  * New upstream snapshot.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 29 Oct 2021 09:21:09 +0200
+
+dash (0.5.11+git20210120+802ebd4-2) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * Support DPKG_ROOT.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sat, 23 Oct 2021 11:44:50 +0200
+
+dash (0.5.11+git20210120+802ebd4-1) unstable; urgency=medium
+
+  * New upstream snapshot.
+  * Drop a patch applied upstream.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 04 Mar 2021 10:22:32 +0100
+
 dash (0.5.11+git20200708+dd9ef66-5pexip3) pexip-bullseye; urgency=medium
 
   * Bullseye rebuild for ARM64 inclusion
