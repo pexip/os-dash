@@ -1,3 +1,9 @@
+dash (0.5.12-2+pexip24u3) pexip-bookworm; urgency=medium
+
+  * New versioning scheme
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 01 Feb 2024 15:55:00 +0000
+
 dash (0.5.12-2pexip2) pexip-bookworm; urgency=medium
 
   * Bookworm build for product distribution
