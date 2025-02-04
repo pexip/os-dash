@@ -1,0 +1,64 @@
+# debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+# FIRST AUTHOR <hjb-news@onlinehome.de>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dash 0.5.12-10\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-07 12:21+0100\n"
+"Last-Translator: Hermann-Josef Beckers <hjb-news@onlinehome.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "/bin/sh ist unwirksam umgeleitet"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Eine Umleitung von /bin/sh wurde gefunden."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Nach dieser Aktualisierung wird dash mit dem neuen Pfad /usr/bin/sh in der "
+"Dpkg-Datenbank verzeichnet. Da dort keine Umleitung für /usr/bin/sh gesetzt ist, "
+"wird die bestehende Umleitung für /bin/sh nicht länger funktionieren."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Um Ihre bevorzugte Standard-Shell beizubehalten, muss eine weitere Umleitung "
+"für /usr/bin/sh gesetzt werden. Falls Sie dies jetzt nicht machen, gehen Ihre  "
+"Änderungen an /bin/sh nach dieser Aktualisierung verloren."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Nach Abschluss der Aktualisierung ist die Umleitung für /bin/sh nicht mehr "
+"erforderlich und kann entfernt werden."
+

@@ -1,0 +1,67 @@
+# Translation of dash's debconf messages to European Portuguese
+# debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+#
+# Américo Monteiro <a_monteiro@gmx.com>, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: dash\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-23 20:00+0000\n"
+"Last-Translator: Américo Monteiro <a_monteiro@gmx.com>\n"
+"Language-Team: Portuguese <>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "/bin/sh está divergido não efectivamente"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Foi encontrada uma divergência para /bin/sh."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Após esta actualização, o dash será gravado na base de dados do dpkg com o "
+"seu novo caminho, /usr/bin/sh. Como não há nenhuma divergência definida "
+"para /usr/bin/sh, a divergência existente para /bin/sh não irá mais "
+"funcionar."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Para continuar a usar sua shell predefinida preferida, você precisa de "
+"configurar outra divergência para /usr/bin/sh. Se não o fizer agora, as "
+"suas alterações em /bin/sh serão perdidas após esta actualização."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Assim que a actualização estiver completa, a divergência para /bin/sh não "
+"será mais precisa e pode ser removida."

@@ -1,19 +1,42 @@
 From: Tavis Ormandy <taviso@google.com>
 Date: Thu, 22 Aug 2013 10:59:36 -0700
-Subject: Implement privmode, part 1
+Subject: Implement privmode
 
-Origin: http://article.gmane.org/gmane.comp.security.oss.general/10969
+Author: Tavis Ormandy <taviso@google.com>
+Origin: https://www.openwall.com/lists/oss-security/2013/08/22/12
+Author: Harald van Dijk <harald@gigawatt.nl>
+Origin: https://www.openwall.com/lists/oss-security/2013/08/22/15
+
+Bug-Debian: https://bugs.debian.org/734869
 ---
- src/dash.1    | 16 ++++++++++------
- src/main.c    | 17 +++++++++++++++++
- src/options.c |  2 ++
- src/options.h |  7 ++++---
- src/var.c     | 29 +++++++++++++++++++++++------
- src/var.h     |  1 +
- 6 files changed, 57 insertions(+), 15 deletions(-)
+ src/Makefile.am |  2 +-
+ src/dash.1      | 16 ++++++++++------
+ src/main.c      |  5 +++++
+ src/options.c   |  4 ++++
+ src/options.h   |  9 +++++----
+ src/priv.c      | 27 +++++++++++++++++++++++++++
+ src/priv.h      |  6 ++++++
+ src/var.c       | 26 ++++++++++++++++++++------
+ src/var.h       |  1 +
+ 9 files changed, 79 insertions(+), 17 deletions(-)
+ create mode 100644 src/priv.c
+ create mode 100644 src/priv.h
 
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 2c437bb..50d5a5b 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -20,7 +20,7 @@ bin_PROGRAMS = dash
+ dash_CFILES = \
+ 	alias.c arith_yacc.c arith_yylex.c cd.c error.c eval.c exec.c expand.c \
+ 	histedit.c input.c jobs.c mail.c main.c memalloc.c miscbltin.c \
+-	mystring.c options.c parser.c redir.c show.c trap.c output.c \
++	mystring.c options.c parser.c priv.c redir.c show.c trap.c output.c \
+ 	bltin/printf.c system.c bltin/test.c bltin/times.c var.c
+ dash_SOURCES = \
+ 	$(dash_CFILES) \
 diff --git a/src/dash.1 b/src/dash.1
-index 169d5df..9c502fe 100644
+index bfdba70..299fb76 100644
 --- a/src/dash.1
 +++ b/src/dash.1
 @@ -41,8 +41,8 @@
@@ -53,7 +76,7 @@ index 169d5df..9c502fe 100644
  .It Fl b Em notify
  Enable asynchronous notification of background job completion.
  (UNIMPLEMENTED for 4.4alpha)
-+.It Fl p Em nopriv
++.It Fl p Em priviliged
 +Do not attempt to reset effective uid if it does not match uid. This is not set
 +by default to help avoid incorrect usage by setuid root programs via system(3) or
 +popen(3).
@@ -61,17 +84,18 @@ index 169d5df..9c502fe 100644
  .Ss Lexical Structure
  The shell reads input in terms of lines from a file and breaks it up into
 diff --git a/src/main.c b/src/main.c
-index 70df726..07124c7 100644
+index 70df726..0001ea6 100644
 --- a/src/main.c
 +++ b/src/main.c
-@@ -93,11 +93,16 @@ main(int argc, char **argv)
- 	volatile int state;
- 	struct stackmark smark;
- 	int login;
-+	uid_t uid;
-+	gid_t gid;
- 
- #ifdef __GLIBC__
+@@ -50,6 +50,7 @@
+ #include "eval.h"
+ #include "jobs.h"
+ #include "input.h"
++#include "priv.h"
+ #include "trap.h"
+ #include "var.h"
+ #include "show.h"
+@@ -98,6 +99,9 @@ main(int argc, char **argv)
  	dash_errno = __errno_location();
  #endif
  
@@ -81,66 +105,118 @@ index 70df726..07124c7 100644
  #if PROFILE
  	monitor(4, etext, profile_buf, sizeof profile_buf, 50);
  #endif
-@@ -146,6 +151,18 @@ main(int argc, char **argv)
+@@ -146,6 +150,7 @@ main(int argc, char **argv)
  	init();
  	setstackmark(&smark);
  	login = procargs(argc, argv);
-+
-+	/*
-+	 * To limit bogus system(3) or popen(3) calls in setuid binaries, require
-+	 * -p flag to work in this situation.
-+	 */
-+	if (!pflag && (uid != geteuid() || gid != getegid())) {
-+		setuid(uid);
-+		setgid(gid);
-+		/* PS1 might need to be changed accordingly. */
-+		choose_ps1();
-+	}
 +
  	if (login) {
  		state = 1;
  		read_profile("/etc/profile");
 diff --git a/src/options.c b/src/options.c
-index a46c23b..48502bb 100644
+index 93ad9d6..1b66cbe 100644
 --- a/src/options.c
 +++ b/src/options.c
-@@ -79,6 +79,7 @@ static const char *const optnames[NOPTS] = {
+@@ -45,6 +45,7 @@
+ #include "jobs.h"
+ #include "input.h"
+ #include "output.h"
++#include "priv.h"
+ #include "trap.h"
+ #include "var.h"
+ #include "memalloc.h"
+@@ -79,6 +80,7 @@ static const char *const optnames[NOPTS] = {
  	"allexport",
  	"notify",
  	"nounset",
-+	"nopriv",
++	"privileged",
  	"nolog",
+ 	"pipefail",
  	"debug",
- };
-@@ -99,6 +100,7 @@ const char optletters[NOPTS] = {
+@@ -100,6 +102,7 @@ const char optletters[NOPTS] = {
  	'a',
  	'b',
  	'u',
 +	'p',
  	0,
  	0,
- };
+ 	0,
+@@ -183,6 +186,7 @@ optschanged(void)
+ #ifdef DEBUG
+ 	opentrace();
+ #endif
++	setprivileged(pflag);
+ 	setinteractive(iflag);
+ #ifndef SMALL
+ 	histedit();
 diff --git a/src/options.h b/src/options.h
-index 975fe33..9e90947 100644
+index f421316..1759823 100644
 --- a/src/options.h
 +++ b/src/options.h
-@@ -59,10 +59,11 @@ struct shparam {
+@@ -59,11 +59,12 @@ struct shparam {
  #define	aflag optlist[12]
  #define	bflag optlist[13]
  #define	uflag optlist[14]
 -#define	nolog optlist[15]
--#define	debug optlist[16]
+-#define	pipefail optlist[16]
+-#define	debug optlist[17]
 +#define	pflag optlist[15]
 +#define	nolog optlist[16]
-+#define	debug optlist[17]
++#define	pipefail optlist[17]
++#define	debug optlist[18]
  
--#define NOPTS	17
-+#define NOPTS	18
+-#define NOPTS	18
++#define NOPTS	19
  
  extern const char optletters[NOPTS];
  extern char optlist[NOPTS];
+diff --git a/src/priv.c b/src/priv.c
+new file mode 100644
+index 0000000..26346c0
+--- /dev/null
++++ b/src/priv.c
+@@ -0,0 +1,27 @@
++#include <unistd.h>
++
++#include "priv.h"
++#include "var.h"
++
++uid_t uid;
++gid_t gid;
++
++void setprivileged(int on)
++{
++	static int is_privileged = 1;
++	if (is_privileged == on)
++		return;
++
++	is_privileged = on;
++
++	/*
++	 * To limit bogus system(3) or popen(3) calls in setuid binaries, require
++	 * -p flag to work in this situation.
++	 */
++	if (!on && (uid != geteuid() || gid != getegid())) {
++		setuid(uid);
++		setgid(gid);
++		/* PS1 might need to be changed accordingly. */
++		choose_ps1();
++	}
++}
+diff --git a/src/priv.h b/src/priv.h
+new file mode 100644
+index 0000000..31b380b
+--- /dev/null
++++ b/src/priv.h
+@@ -0,0 +1,6 @@
++#include <unistd.h>
++
++extern uid_t uid;
++extern gid_t gid;
++
++void setprivileged(int on);
 diff --git a/src/var.c b/src/var.c
-index ef9c2bd..4de2122 100644
+index ef9c2bd..5326a80 100644
 --- a/src/var.c
 +++ b/src/var.c
 @@ -81,6 +81,9 @@ MKINIT char defoptindvar[] = "OPTIND=1";
@@ -162,7 +238,7 @@ index ef9c2bd..4de2122 100644
  	{ 0,	VSTRFIXED|VTEXTFIXED,		"PS2=> ",	0 },
  	{ 0,	VSTRFIXED|VTEXTFIXED,		"PS4=+ ",	0 },
  	{ 0,	VSTRFIXED|VTEXTFIXED,		defoptindvar,	getoptsreset },
-@@ -174,11 +177,25 @@ initvar(void)
+@@ -174,11 +177,22 @@ initvar(void)
  		vp->next = *vpp;
  		*vpp = vp;
  	} while (++vp < end);
@@ -182,9 +258,6 @@ index ef9c2bd..4de2122 100644
 +void
 +choose_ps1(void)
 +{
-+	if (vps1.flags & VEXPORT)
-+		return;
-+
 +	if (!geteuid()) {
 +		vps1.text = rootps1;
 +	} else {

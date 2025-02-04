@@ -1,0 +1,63 @@
+# debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+# Frederik Himpe, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dash\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-12 17:35+0100\n"
+"Last-Translator: Frederik Himpe\n"
+"Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "Nutteloze omleiding voor /bin/sh"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Er is een omleiding van /bin/sh gevonden."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Na deze update zal dash opgenomen worden in de dpkg-database op zijn "
+"nieuwe pad, /usr/bin/sh. Omdat er geen omleiding is ingesteld voor /usr/"
+"bin/sh, zal de bestaande omleiding voor /bin/sh niet langer werken."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Om de gewenste standaardshell te blijven gebruiken, moet je een andere "
+"omleiding instellen voor /usr/bin/sh. Als je dat nu niet doet, zullen je "
+"wijzigingen aan /bin/sh verloren gaan na deze update."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Zodra de update voltooid is, zal de omleiding voor /bin/sh niet langer "
+"nodig zijn en kan deze verwijderd worden."

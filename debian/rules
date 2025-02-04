@@ -30,4 +30,12 @@ override_dh_auto_configure:
 		--disable-lineno \
 		--disable-glob
 
+execute_before_dh_gencontrol:
+	# dh_installdebconf will add a dependency on debconf to
+	# ${misc:Depends} because of the presence of ./debian/dash.templates
+	# Since the preinst snippet has fallback code for when debconf is not
+	# available, that extra dependency is not needed.
+	# FIXME: remove this after Trixie together with the preinst
+	sed -i '/^misc:Depends=/s/debconf[^,]*[, ]*//' debian/dash.substvars
+
 .PHONY: override_dh_auto_configure

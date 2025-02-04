@@ -2,19 +2,48 @@ From: Andrej Shadura <andrewsh@debian.org>
 Date: Thu, 18 Jul 2019 13:00:01 -0300
 Subject: Add $(CPPFLAGS), $(CFLAGS) and $(LDFLAGS) to $(COMPILE_FOR_BUILD) so that helpers are built with hardening
 
----
- src/Makefile.am | 1 +
- 1 file changed, 1 insertion(+)
+Author: Andrej Shadura <andrewsh@debian.org>
 
+But don't leak host CFLAGS into build compiler invocation
+
+Author: Helmut Grohne <helmut@subdivi.de>
+Bug-Debian: https://bugs.debian.org/1057339
+---
+ configure.ac    | 6 ++++++
+ src/Makefile.am | 1 +
+ 2 files changed, 7 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index ef75632..61d76f2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -15,11 +15,17 @@ AC_SYS_LARGEFILE
+ AC_MSG_CHECKING([for build system compiler])
+ if test "$cross_compiling" = yes; then
+ 	CC_FOR_BUILD=${CC_FOR_BUILD-cc}
++	CFLAGS_FOR_BUILD=${CFLAGS_FOR_BUILD-}
++	CPPFLAGS_FOR_BUILD=${CPPFLAGS_FOR_BUILD-}
+ else
+ 	CC_FOR_BUILD=${CC}
++	CFLAGS_FOR_BUILD=${CFLAGS}
++	CPPFLAGS_FOR_BUILD=${CPPFLAGS}
+ fi
+ AC_MSG_RESULT(${CC_FOR_BUILD})
+ AC_SUBST(CC_FOR_BUILD)
++AC_SUBST(CFLAGS_FOR_BUILD)
++AC_SUBST(CPPFLAGS_FOR_BUILD)
+ 
+ AC_MSG_CHECKING([for __attribute__((__alias__()))])
+ dash_cv_have_attribute_alias=no
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 1732465..2c437bb 100644
+index 1732465..4d37f20 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -12,6 +12,7 @@ AM_CPPFLAGS_FOR_BUILD = $(COMMON_CPPFLAGS)
  COMPILE_FOR_BUILD = \
  	$(CC_FOR_BUILD) $(DEFAULT_INCLUDES) $(AM_CPPFLAGS_FOR_BUILD) \
  	$(CPPFLAGS_FOR_BUILD) \
-+	$(CPPFLAGS) $(CFLAGS) $(LDFLAGS) \
++	$(LDFLAGS) \
  	$(AM_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) 
  
  bin_PROGRAMS = dash

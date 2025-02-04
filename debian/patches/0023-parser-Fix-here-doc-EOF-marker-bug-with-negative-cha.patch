@@ -1,0 +1,27 @@
+From: Herbert Xu <herbert@gondor.apana.org.au>
+Date: Fri, 24 May 2024 22:41:00 +0800
+Subject: parser: Fix here-doc EOF marker bug with negative chars
+
+The here-document EOF marker parsing code incorrectly treats all
+negative bytes as EOF instead of just PEOF.  Fix this by testing
+against PEOF.
+
+Fixes: 81daadfce8d5 ("[PARSER] Removed noexpand/length check on eofmark")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---
+ src/parser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/parser.c b/src/parser.c
+index a552c47..81a3cdb 100644
+--- a/src/parser.c
++++ b/src/parser.c
+@@ -1122,7 +1122,7 @@ more_heredoc:
+ 			len = out - p;
+ 
+ 			if (len) {
+-				len -= c < 0;
++				len -= c <= PEOF;
+ 				c = p[-1];
+ 
+ 				if (len) {

@@ -1,3 +1,136 @@
+dash (0.5.12-12) unstable; urgency=medium
+
+  [ Andrej Shadura ]
+  * Add Dutch translation for debconf templates.
+    Thanks to Frederik Himpe.
+  * Update the Slovak debconf translation.
+  * Add Ukrainian debconf template translation.
+  * Add missing-debconf-dependency-for-preinst lintian override.
+
+  [ Andika Triwidada ]
+  * Add Indonesian translation for debconf templates.
+
+  [ Alexander Golubev ]
+  * Add Russian translation for debconf templates.
+
+  [ bubu ]
+  * Add French translation for debconf templates (Closes: #1093592).
+
+  [ Hermann-Josef Beckers ]
+  * Add German translation for debconf templates (Closes: #1092855).
+
+  [ Parodper ]
+  * Add Galician translation for debconf templates.
+
+  [ Américo Monteiro ]
+  * Add Portugese debconf translation (Closes: #1093888).
+
+  [ Paulo Henrique de Lima Santana ]
+  * Add Brazilian Portugese debconf translation (Closes: #1094209).
+
+  [ Trần Ngọc Quân ]
+  * Add Vietnamese debconf translation.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Tue, 04 Feb 2025 14:14:42 +0100
+
+dash (0.5.12-11) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * debian/rules: remove debconf from ${misc:Depends} (Closes: #1092494).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 08 Jan 2025 18:07:23 +0100
+
+dash (0.5.12-10) unstable; urgency=medium
+
+  [ Dominik Viererbe ]
+  * d/t/mmdebstrap: remove unused parsing of distribution from changelog
+  * Incorporate Ubuntu DEP-17 /usr merge changes:
+    [ Julian Andres Klode ]
+    - debian/shells.d/dash: move files to /usr
+    - debian/tests/smoke: add /bin/dash link tests
+
+  [ Helmut Grohne ]
+  * Warn the user if /bin/sh is ineffectively diverted (DEP-17)
+    (Closes: #1078130)
+
+  [ Andrej Shadura ]
+  * Apply upstream patch to align test -nt and -ot with POSIX.1-2024
+    (Closes: #558989)
+  * Apply upstream patch to fix here-doc handling.
+  * Add Belarusian and Slovak translations for debconf templates.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 03 Jan 2025 15:13:44 +0100
+
+dash (0.5.12-9) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Move files from / to /usr to finalize /usr-merge.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 05 Jun 2024 10:08:31 +0200
+
+dash (0.5.12-8) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Don't leak host CFLAGS into build compiler invocation
+    (Closes: #1057339).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sun, 19 May 2024 14:28:56 +0200
+
+dash (0.5.12-7) unstable; urgency=medium
+
+  [ Andrej Shadura ]
+  * Drop obsolete ash package (Closes: #920644)
+  * Bump debhelper from old 12 to 13.
+  * Set Rules-Requires-Root: no.
+  * Bump Standards-Version to 4.6.2.
+  * Upstream patch:
+    - Implement pipefail option (Closes: #1071238)
+
+  [ Luca Boccassi ]
+  * Drop versioned dependencies satisfied since Buster (Closes: #1057323)
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 17 May 2024 17:12:12 +0200
+
+dash (0.5.12-6) unstable; urgency=medium
+
+  [ Johannes Schauer Marin Rodrigues ]
+  * debian/tests/mmdebstrap: use copy-host-apt-sources-and-preferences hook.
+     - use the hook provided by mmdebstrap instead of cooking up our own
+       thing, thus preventing code duplication
+     - this also copies over apt pinning rules which were missing before
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 21 Jun 2023 13:28:50 +0200
+
+dash (0.5.12-5) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * dash.postinst: fix installing with --path-exclude=/usr/share/man/*
+    (Closes: #1038067)
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sat, 17 Jun 2023 12:34:23 +0200
+
+dash (0.5.12-4) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Mon, 12 Jun 2023 16:17:05 +0200
+
+dash (0.5.12-3) experimental; urgency=medium
+
+  [ Andrej Shadura ]
+  * Fix bug number in the patch description
+
+  [ Helmut Grohne ]
+  * dash.postinst: Remove upgrade path from pre-sarge ash. (Closes:
+    #989419)
+  * Remove unnecessary diversion in case /bin/sh points to dash. (Closes:
+    #989632)
+
+  [ Luca Boccassi ]
+  * dash.postinst: remove unused function
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sun, 30 Apr 2023 15:53:24 +0200
+
 dash (0.5.12-2) unstable; urgency=medium
 
   * Fix the changelog entry.

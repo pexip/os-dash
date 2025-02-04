@@ -1,0 +1,168 @@
+From: наб <nabijaczleweli@nabijaczleweli.xyz>
+Date: Sun, 28 Jul 2024 04:42:52 +0200
+Subject: builtin: Align test -nt and -ot with POSIX.1-2024
+
+117027  pathname1 −nt pathname2
+117028    True if pathname1 resolves to an existing file and pathname2 cannot be resolved, or if
+117029    both resolve to existing files and pathname1 is newer than pathname2 according to
+117030    their last data modification timestamps; otherwise, false.
+117031  pathname1 −ot pathname2
+117032    True if pathname2 resolves to an existing file and pathname1 cannot be resolved, or if
+117033    both resolve to existing files and pathname1 is older than pathname2 according to
+117034    their last data modification timestamps; otherwise, false.
+
+The correct output is
+  $ [ 2024 -nt 2023 ] && echo yes
+  yes
+  $ [ 2023 -nt 2024 ] && echo yes
+  $ [ 2023 -nt ENOENT ] && echo yes
+  yes
+  $ [ ENOENT -nt 2024 ] && echo yes
+and
+  $ [ 2024 -ot 2023 ] && echo yes
+  $ [ 2023 -ot 2024 ] && echo yes
+  yes
+  $ [ 2023 -ot ENOENT ] && echo yes
+  $ [ ENOENT -ot 2024 ] && echo yes
+  yes
+but dash currently returned only the first yes out of both blocks.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+Bug-Debian: https://bugs.debian.org/558989
+---
+ src/bltin/test.c | 56 ++++++++++++++++++++++++++++----------------------------
+ src/dash.1       | 14 ++++++++++++--
+ 2 files changed, 40 insertions(+), 30 deletions(-)
+
+diff --git a/src/bltin/test.c b/src/bltin/test.c
+index fd8a43b..d3aeda8 100644
+--- a/src/bltin/test.c
++++ b/src/bltin/test.c
+@@ -8,17 +8,17 @@
+  * This program is in the Public Domain.
+  */
+ 
+-#include <sys/stat.h>
+-#include <sys/types.h>
+-
++#include "bltin.h"
++#include "../exec.h"
+ #include <fcntl.h>
+ #include <inttypes.h>
++#include <stdarg.h>
++#include <stdbool.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <sys/stat.h>
++#include <sys/types.h>
+ #include <unistd.h>
+-#include <stdarg.h>
+-#include "bltin.h"
+-#include "../exec.h"
+ 
+ /* test(1) accepts the following grammar:
+ 	oexpr	::= aexpr | aexpr "-o" oexpr ;
+@@ -146,8 +146,8 @@ static int binop(void);
+ static int filstat(char *, enum token);
+ static enum token t_lex(char **);
+ static int isoperand(char **);
+-static int newerf(const char *, const char *);
+-static int olderf(const char *, const char *);
++static bool newerf(const char *, const char *);
++static bool olderf(const char *, const char *);
+ static int equalf(const char *, const char *);
+ 
+ #ifdef HAVE_FACCESSAT
+@@ -466,39 +466,39 @@ static int isoperand(char **tp)
+ 	return op && op->op_type == BINOP;
+ }
+ 
+-static int
+-newerf (const char *f1, const char *f2)
++static bool newerf(const char *f1, const char *f2)
+ {
+ 	struct stat64 b1, b2;
+ 
++	if (stat64(f1, &b1) != 0)
++		return false;
++	if (stat64(f2, &b2) != 0)
++		return true;
++
+ #ifdef HAVE_ST_MTIM
+-	return (stat64(f1, &b1) == 0 &&
+-		stat64(f2, &b2) == 0 &&
+-		( b1.st_mtim.tv_sec > b2.st_mtim.tv_sec ||
+-		 (b1.st_mtim.tv_sec == b2.st_mtim.tv_sec && (b1.st_mtim.tv_nsec > b2.st_mtim.tv_nsec )))
+-	);
++	return b1.st_mtim.tv_sec > b2.st_mtim.tv_sec ||
++	       (b1.st_mtim.tv_sec == b2.st_mtim.tv_sec &&
++		b1.st_mtim.tv_nsec > b2.st_mtim.tv_nsec);
+ #else
+-	return (stat64(f1, &b1) == 0 &&
+-		stat64(f2, &b2) == 0 &&
+-		b1.st_mtime > b2.st_mtime);
++	return b1.st_mtime > b2.st_mtime;
+ #endif
+ }
+ 
+-static int
+-olderf (const char *f1, const char *f2)
++static bool olderf(const char *f1, const char *f2)
+ {
+ 	struct stat64 b1, b2;
+ 
++	if (stat64(f2, &b2) != 0)
++		return false;
++	if (stat64(f1, &b1) != 0)
++		return true;
++
+ #ifdef HAVE_ST_MTIM
+-	return (stat64(f1, &b1) == 0 &&
+-		stat64(f2, &b2) == 0 &&
+-		(b1.st_mtim.tv_sec < b2.st_mtim.tv_sec ||
+-		 (b1.st_mtim.tv_sec == b2.st_mtim.tv_sec && (b1.st_mtim.tv_nsec < b2.st_mtim.tv_nsec )))
+-	);
++	return b1.st_mtim.tv_sec < b2.st_mtim.tv_sec ||
++	       (b1.st_mtim.tv_sec == b2.st_mtim.tv_sec &&
++		b1.st_mtim.tv_nsec < b2.st_mtim.tv_nsec);
+ #else
+-	return (stat64(f1, &b1) == 0 &&
+-		stat64(f2, &b2) == 0 &&
+-		b1.st_mtime < b2.st_mtime);
++	return b1.st_mtime < b2.st_mtime;
+ #endif
+ }
+ 
+diff --git a/src/dash.1 b/src/dash.1
+index 299fb76..5d616dd 100644
+--- a/src/dash.1
++++ b/src/dash.1
+@@ -2016,7 +2016,12 @@ and
+ exist and
+ .Ar file1
+ is newer than
+-.Ar file2 .
++.Ar file2 ,
++or if
++.Ar file1
++exists but
++.Ar file2
++doesn't.
+ .It Ar file1 Fl ot Ar file2
+ True if
+ .Ar file1
+@@ -2025,7 +2030,12 @@ and
+ exist and
+ .Ar file1
+ is older than
+-.Ar file2 .
++.Ar file2 ,
++or if
++.Ar file2
++exists but
++.Ar file1
++doesn't.
+ .It Ar file1 Fl ef Ar file2
+ True if
+ .Ar file1

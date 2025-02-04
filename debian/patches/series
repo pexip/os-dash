@@ -9,5 +9,7 @@
 0018-builtin-Don-t-early-exit-when-first-hash-r-is-found.patch
 0019-builtin-Actually-accept-ulimit-r.patch
 0020-Update-manpages.patch
-9001-Add-privmode-Part-1.diff
-9002-Add-privmode-Part-2.diff
+0021-jobs-Implement-pipefail-option.patch
+0022-builtin-Align-test-nt-and-ot-with-POSIX.1-2024.patch
+0023-parser-Fix-here-doc-EOF-marker-bug-with-negative-cha.patch
+9001-Add-privmode.diff
