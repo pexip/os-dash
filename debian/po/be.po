@@ -1,0 +1,63 @@
+# debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+# Andrej Shadura <andrewsh@debian.org>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dash\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-03 14:22+0100\n"
+"Last-Translator: Andrej Shadura <andrewsh@debian.org>\n"
+"Language-Team: \n"
+"Language: be\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "Перанакіраваньне /bin/sh не будзе працаваць"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Было знойдзенае перанакіраваньне /bin/sh."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Пасля гэтага абнаўленьня dash будзе запісаны ў базе дадзеных dpkg на новым "
+"шляху /usr/bin/sh. Паколькі для /usr/bin/sh перанакіраваньне не настроенае, "
+"сучаснае перанакіраваньне для /bin/sh больш не будзе працаваць."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Каб працягваць выкарыстоўваць shell паводле вашага выбару, вам трэба "
+"настроіць новае перанакіраваньне для /usr/bin/sh. Калі вы не зробіце гэта зараз, "
+"вашая зьмена /bin/sh будзе страчаная пасля гэтага абнаўленьня."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Пасля завяршэньня абнаўленьня перанакіраваньне для /bin/sh больш не будзе "
+"патрэбнае і можа быць выдалена."

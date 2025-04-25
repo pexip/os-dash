@@ -1,0 +1,64 @@
+# Indonesian translation of debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+# Andika Triwidada <andika@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dash debconf\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-15 21:52+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: \n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "/bin/sh di-divert secara tidak efektif"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Suatu diversi /bin/sh ditemukan."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Setelah pemutakhiran ini, dash akan direkam dalam basis data dpkg pada "
+"path barunya, /usr/bin/sh. Karena tidak ada diversi yang ditata bagi /usr/"
+"bin/sh, diversi yang ada bagi /bin/sh tidak akan bekerja lagi."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Untuk mempertahankan shell baku yang Anda sukai, Anda perlu menata diversi "
+"lain bagi /usr/bin/sh. Bila Anda tidak melakukannya sekarang, perubahan "
+"Anda ke /bin/sh akan hilang setelah peningkatan ini."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Setelah peningkatan selesai, diversi bagi /bin/sh tidak akan diperlukan "
+"lagi dan dapat dihapus."

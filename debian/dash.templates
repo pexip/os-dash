@@ -1,0 +1,10 @@
+Template: dash/ineffectivediversion
+Type: error
+_Description: /bin/sh is ineffectively diverted
+ A diversion of /bin/sh was found.
+ .
+ After this update, dash will be recorded in the dpkg database at its new path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the existing diversion for /bin/sh will no longer work.
+ .
+ To keep using your preferred default shell, you need to set up another diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh will be lost after this upgrade.
+ .
+ Once the upgrade is complete, the diversion for /bin/sh will no longer be needed and can be removed.

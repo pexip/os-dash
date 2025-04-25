@@ -1,0 +1,67 @@
+# debconf templates for dash
+# Copyright (C) 2024, 2025 Debian dash maintainers
+# This file is distributed under the same license as the dash package.
+# bubu <bubub@no-log.org>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dash 0.5.12-11\n"
+"Report-Msgid-Bugs-To: dash@packages.debian.org\n"
+"POT-Creation-Date: 2025-01-03 14:21+0100\n"
+"PO-Revision-Date: 2025-01-16 13:37+0100\n"
+"Last-Translator: bubu <bubub@no-log.org>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "/bin/sh is ineffectively diverted"
+msgstr "/bin/sh n'est pas détourné de façon efficace"
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid "A diversion of /bin/sh was found."
+msgstr "Un détournement de /bin/sh a été trouvé."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"After this update, dash will be recorded in the dpkg database at its new "
+"path, /usr/bin/sh. Since there is no diversion set for /usr/bin/sh, the "
+"existing diversion for /bin/sh will no longer work."
+msgstr ""
+"Après cette mise à jour, dash sera enregistré dans la base de données de "
+"dpkg avec son nouveau chemin, /usr/bin/sh. Comme il n'y a pas de "
+"détournement défini pour /usr/bin/sh, le détournement existant pour /bin/sh "
+"ne fonctionnera plus."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"To keep using your preferred default shell, you need to set up another "
+"diversion for /usr/bin/sh. If you don't do so now, your changes to /bin/sh "
+"will be lost after this upgrade."
+msgstr ""
+"Pour continuer à utiliser votre interpréteur de commande préféré par "
+"défaut, vous devez définir un autre détournement pour /usr/bin/sh. Si cela "
+"n'est pas fait, vos changements apportés à /bin/sh seront perdus après "
+"cette mise à jour."
+
+#. Type: error
+#. Description
+#: ../dash.templates:1001
+msgid ""
+"Once the upgrade is complete, the diversion for /bin/sh will no longer be "
+"needed and can be removed."
+msgstr ""
+"Une fois la mise à jour effectuée, le détournement pour /bin/sh ne sera "
+"plus nécessaire et pourra être supprimé."
